@@ -1,0 +1,72 @@
+#TASK 1  Creating 100 containers,25 each of alpine, fedora, centos, java. And the conatiner must run forever#until it is stopped
+
+a=0
+while [ $a -lt 100 ]   # this is loop1
+do
+	if [ $a -le 25 ]
+	then
+		docker run -d --name adhocnw$a -it alpine ping fb.com
+    a=`expr $a + 1` 
+    echo $a
+elif [ $a -le 50 ] && [ $a -gt 25 ]
+then
+	docker run -d --name adhocnw$a -it fedora yes
+  a=`expr $a + 1`
+  echo $a
+elif [ $a -le 75 ] && [ $a -gt 50 ]
+then
+	docker run -d --name adhocnw$a -it centos ping fb.com
+  a=`expr $a + 1`
+  echo $a
+else [ $a -le 100 ] && [ $a -gt 75 ]
+	docker run -d --name adhocnw$a -it java ping fb.com
+a=`expr $a + 1`
+echo $a
+	fi
+done
+
+
+#TASK 2 Write command to store NAMES and CREATED of a conatiner in a text file.
+
+
+docker ps -a --format "table {{.Names}}\t{{.CreatedAt}}" > container_list.txt
+cat container_list.txt
+
+
+
+
+
+
+
+
+#TASK 3:
+
+
+#dockerfile
+
+FROM ubuntu
+RUN  apt update && apt install -y firefox
+CMD ["/usr/bin/firefox"]
+#command line
+
+        sudo docker build -t customimg:v1 .
+        sudo docker images
+        sudo docker run -it --env="DISPLAY" --net=host customimg:v1
+
+
+
+
+
+
+
+
+
+
+#TASK 4:       Write command to store RAM & CPU consumption of a conatiner in a text file.
+
+ 
+ 
+docker stats --all --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}" > Container_resources.txt
+
+cat Container_resources.txt
+
